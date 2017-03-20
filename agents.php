@@ -14,7 +14,9 @@
             </div>
             <div class="row">
 				<p>
-					<a href="agents_create.php" class="btn btn-success">Create</a>
+					<a href="agents_create.php" class="btn btn-success">Add Agent</a>
+					<a href="customers.php" class="btn">View Customers</a>
+					<a href="policies.php" class="btn">View Policies</a>
                 </p>
                 <table class="table table-striped table-bordered">
                   <thead>

@@ -14,7 +14,9 @@
             </div>
             <div class="row">
 				<p>
-					<a href="policies_create.php" class="btn btn-success">Create</a>
+					<a href="policies_create.php" class="btn btn-success">Add Policy</a>
+					<a href="agents.php" class="btn">View Agents</a>
+					<a href="customers.php" class="btn">View Customers</a>
                 </p>
                 <table class="table table-striped table-bordered">
                   <thead>
