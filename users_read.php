@@ -1,4 +1,10 @@
 <?php
+  session_start();
+
+  if(!($_SESSION['cred']=='ADMIN')){
+    header('Location: index.php');
+    exit;
+  }
     require 'database.php';
     $id = null;
     if ( !empty($_GET['id'])) {
@@ -6,11 +12,11 @@
     }
      
     if ( null==$id ) {
-        header("Location: agents.php");
+        header("Location: users.php");
     } else {
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "SELECT * FROM agents where id = ?";
+        $sql = "SELECT * FROM users where id = ?";
         $q = $pdo->prepare($sql);
         $q->execute(array($id));
         $data = $q->fetch(PDO::FETCH_ASSOC);
@@ -27,29 +33,36 @@
 </head>
  
 <body>
-  <div class="alt">
+<div class="alt">
      <div class="inner">
-         <h2>Read an Agent</h2>
+         <h2>Read a User</h2>
      </div>
     <div class="table-wrapper">
         <table class="alt">
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Photo</th>
                     <th>Email Address</th>
-                    <th>Phone Number</th>
+                    <th>Mobile Number</th>
+                    <th>Username</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td><?php echo $data['name'];?></td>
+                    <td width="200"><?php if (!empty(base64_encode($data['picture'])))
+                                echo '<img  height=5%; width=50%; src="data:image/jpeg;base64,' . base64_encode( $data['picture'] ) . '" />'; 
+                              else 
+                                echo 'No photo on file.';?></td>
                     <td><?php echo $data['email'];?></td>
-                    <td><?php echo $data['phone'];?></td>
+                    <td><?php echo $data['mobile'];?></td>
+                    <td><?php echo $data['username']?></td>
                 </tr>
             </tbody>
         </table> 
       <div class="actions">
-        <a class="button" href="agents.php">Back</a>
+        <a class="button" href="users.php">Back</a>
       </div>
     </div>
   </div>

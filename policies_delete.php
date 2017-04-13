@@ -1,4 +1,10 @@
 <?php
+session_start();
+if(!isset($_SESSION['cred'])){
+  session_destroy();
+  header('Location: login.php');
+  exit;
+}
     require 'database.php';
     $id = 0;
      
@@ -26,28 +32,34 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <link   href="css/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
 </head>
  
 <body>
-    <div class="container">
+    <div class="alt">
      
-                <div class="span10 offset1">
+                <div class="inner">
                     <div class="row">
                         <h3>Delete a Policy</h3>
                     </div>
                      
                     <form class="form-horizontal" action="policies_delete.php" method="post">
                       <input type="hidden" name="id" value="<?php echo $id;?>"/>
-                      <p class="alert alert-error">Are you sure to delete ?</p>
+                      <p class="alert alert-error">Are you sure to delete this policy?</p>
                       <div class="form-actions">
-                          <button type="submit" class="btn btn-danger">Yes</button>
-                          <a class="btn" href="policies.php">No</a>
+                          <input type="button" onclick="this.form.submit()" class="button special small" value="Yes"></input>
+                          <input type="button" onclick="window.location='policies.php'" class="button small"value="No"></input>
                         </div>
                     </form>
                 </div>
                  
     </div> <!-- /container -->
+    <script src="js/jquery.min.js"></script>
+			<script src="js/jquery.scrolly.min.js"></script>
+			<script src="js/jquery.scrollex.min.js"></script>
+			<script src="js/skel.min.js"></script>
+			<script src="js/util.js"></script>
+			<script src="js/main.js"></script>
   </body>
 </html>

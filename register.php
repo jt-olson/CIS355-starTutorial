@@ -1,26 +1,23 @@
-<!DOCTYPE html>
 <?php
+session_start();
+
     require 'database.php';
  
-    $id = null;
-    if ( !empty($_GET['id'])) {
-        $id = $_REQUEST['id'];
-    }
-     
-    if ( null==$id ) {
-        header("Location: customers.php");
-    }
-     
     if ( !empty($_POST)) {
         // keep track validation errors
         $nameError = null;
         $emailError = null;
         $mobileError = null;
+        $usernameError = null;
+        $passwordError = null;
          
         // keep track post values
         $name = $_POST['name'];
         $email = $_POST['email'];
         $mobile = $_POST['mobile'];
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $cred = 'CUST';
          
         // validate input
         $valid = true;
@@ -41,35 +38,35 @@
             $mobileError = 'Please enter Mobile Number';
             $valid = false;
         }
+        
+        if (empty($username)) {
+          $usernameError = 'Please enter a Username';
+          $valid = false;
+        }
+       
+        if (empty($password)){
+          $passwordError = 'Please enter a password';
+          $valid = false;
+        }
          
-        // update data
+        // insert data
         if ($valid) {
             $pdo = Database::connect();
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "UPDATE customers  set name = ?, email = ?, mobile =? WHERE id = ?";
+            $sql = "INSERT INTO users (name,email,mobile,username,password,cred) values(?, ?, ?, ?, ?, ?)";
             $q = $pdo->prepare($sql);
-            $q->execute(array($name,$email,$mobile,$id));
+            $q->execute(array($name,$email,$mobile,$username,$password,$cred));
             Database::disconnect();
-            header("Location: customers.php");
+            header("Location: index.php");
         }
-    } else {
-        $pdo = Database::connect();
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "SELECT * FROM customers where id = ?";
-        $q = $pdo->prepare($sql);
-        $q->execute(array($id));
-        $data = $q->fetch(PDO::FETCH_ASSOC);
-        $name = $data['name'];
-        $email = $data['email'];
-        $mobile = $data['mobile'];
-        Database::disconnect();
     }
 ?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <link   href="css/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
 </head>
  
 <body>
@@ -77,10 +74,10 @@
      
                 <div class="span10 offset1">
                     <div class="row">
-                        <h3>Update a Customer</h3>
+                        <h3>Register</h3>
                     </div>
              
-                    <form class="form-horizontal" action="customers_update.php?id=<?php echo $id?>" method="post">
+                    <form class="form-horizontal" action="register.php" method="post">
                       <div class="control-group <?php echo !empty($nameError)?'error':'';?>">
                         <label class="control-label">Name</label>
                         <div class="controls">
@@ -108,13 +105,40 @@
                             <?php endif;?>
                         </div>
                       </div>
+                     
+                      <div class="control-group <?php echo !empty($usernameError)?'error':'';?>">
+                        <label class="control-label">Username</label>
+                        <div class="controls">
+                            <input name="username" type="text"  placeholder="Username" value="<?php echo !empty($username)?$username:'';?>">
+                            <?php if (!empty($usernameError)): ?>
+                                <span class="help-inline"><?php echo $usernameError;?></span>
+                            <?php endif; ?>
+                        </div>
+                      </div>
+                      
+                     <div class="control-group <?php echo !empty($passwordError)?'error':'';?>">
+                        <label class="control-label">Password</label>
+                        <div class="controls">
+                            <input name="password" type="text"  placeholder="Password" value="<?php echo !empty($password)?$password:'';?>">
+                            <?php if (!empty($passwordError)): ?>
+                                <span class="help-inline"><?php echo $passwordError;?></span>
+                            <?php endif; ?>
+                        </div>
+                      </div>
+                      
                       <div class="form-actions">
-                          <button type="submit" class="btn btn-success">Update</button>
-                          <a class="btn" href="customers.php">Back</a>
+                          <input type="button" onclick="this.form.submit()" class="button small" value="Create"></input>
+                          <input type="button" onclick="window.location='index.php'" class="button small"value="Back"></input>
                         </div>
                     </form>
                 </div>
                  
     </div> <!-- /container -->
+    <script src="js/jquery.min.js"></script>
+			<script src="js/jquery.scrolly.min.js"></script>
+			<script src="js/jquery.scrollex.min.js"></script>
+			<script src="js/skel.min.js"></script>
+			<script src="js/util.js"></script>
+			<script src="js/main.js"></script>
   </body>
 </html>

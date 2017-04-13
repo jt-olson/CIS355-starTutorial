@@ -1,4 +1,10 @@
 <?php
+session_start();
+if(!isset($_SESSION['cred'])){
+  session_destroy();
+  header('Location: login.php');
+  exit;
+}
     require 'database.php';
     $id = null;
     if ( !empty($_GET['id'])) {
@@ -22,51 +28,46 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <link   href="css/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
 </head>
  
 <body>
-    <div class="container">
-     
-                <div class="span10 offset1">
-                    <div class="row">
-                        <h3>Read a Policy</h3>
-                    </div>
-                     
-                    <div class="form-horizontal" >
-                      <div class="control-group">
-                        <label class="control-label">Name</label>
-                        <div class="controls">
-                            <label class="checkbox">
-                                <?php echo $data['name'];?>
-                            </label>
-                        </div>
-                      </div>
-                      <div class="control-group">
-                        <label class="control-label">Description</label>
-                        <div class="controls">
-                            <label class="checkbox">
-                                <?php echo $data['description'];?>
-                            </label>
-                        </div>
-                      </div>
-                      <div class="control-group">
-                        <label class="control-label">Type</label>
-                        <div class="controls">
-                            <label class="checkbox">
-                                <?php echo $data['type'];?>
-                            </label>
-                        </div>
-                      </div>
-                        <div class="form-actions">
-                          <a class="btn" href="policies.php">Back</a>
-                       </div>
-                     
-                      
-                    </div>
-                </div>
-                 
-    </div> <!-- /container -->
+<div class="alt">
+     <div class="inner">
+         <h2>Read a Policy</h2>
+     </div>
+    <div class="table-wrapper">
+        <table class="alt">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Owner</th>
+                    <th>Agent</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><?php echo $data['insurance'];?></td>
+                    <td><?php echo $data['description'];?></td>
+                    <td><?php echo $data['type'];?></td>
+                    <td><?php echo $data['owner'];?></td>
+                    <td><?php echo $data['agent'];?></td>
+                </tr>
+            </tbody>
+        </table> 
+      <div class="actions">
+        <a class="button" href="policies.php">Back</a>
+      </div>
+    </div>
+  </div>
+    <script src="js/jquery.min.js"></script>
+			<script src="js/jquery.scrolly.min.js"></script>
+			<script src="js/jquery.scrollex.min.js"></script>
+			<script src="js/skel.min.js"></script>
+			<script src="js/util.js"></script>
+			<script src="js/main.js"></script>
   </body>
 </html>

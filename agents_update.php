@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <?php
+session_start();
+if(!($_SESSION['cred']=='ADMIN')){
+  header('Location: index.php');
+  exit;
+}
     require 'database.php';
  
     $id = null;
@@ -68,19 +73,20 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <link   href="css/bootstrap.min.css" rel="stylesheet">
-    <script src="js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
 </head>
  
 <body>
-    <div class="container">
+    <div class="alt">
      
-                <div class="span10 offset1">
+                <div class="inner">
                     <div class="row">
                         <h3>Update an Agent</h3>
                     </div>
              
-                    <form class="form-horizontal" action="agents_update.php?id=<?php echo $id?>" method="post">
+                    <form action="agents_update.php?id=<?php echo $id?>" method="post">
+                      <div class="row uniform">
                       <div class="control-group <?php echo !empty($nameError)?'error':'';?>">
                         <label class="control-label">Name</label>
                         <div class="controls">
@@ -91,7 +97,7 @@
                         </div>
                       </div>
                       <div class="control-group <?php echo !empty($emailError)?'error':'';?>">
-                        <label class="control-label">Email Address</label>
+                        <label>Email Address</label>
                         <div class="controls">
                             <input name="email" type="text" placeholder="Email Address" value="<?php echo !empty($email)?$email:'';?>">
                             <?php if (!empty($emailError)): ?>
@@ -108,13 +114,21 @@
                             <?php endif;?>
                         </div>
                       </div>
+                      </div>
                       <div class="form-actions">
-                          <button type="submit" class="btn btn-success">Update</button>
-                          <a class="btn" href="agents.php">Back</a>
+                          <input type="button" onclick="this.form.submit()" class="button small" value="Update"></input>
+                          <input type="button" onclick="window.location='agents.php'" class="button small" value="Back"></input>
                         </div>
+                      
                     </form>
                 </div>
                  
     </div> <!-- /container -->
+    <script src="js/jquery.min.js"></script>
+			<script src="js/jquery.scrolly.min.js"></script>
+			<script src="js/jquery.scrollex.min.js"></script>
+			<script src="js/skel.min.js"></script>
+			<script src="js/util.js"></script>
+			<script src="js/main.js"></script>
   </body>
 </html>
